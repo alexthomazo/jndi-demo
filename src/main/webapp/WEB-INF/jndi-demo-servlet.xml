@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       						http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       						http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+       						http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+       						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+    <!-- Database -->
+    <jee:jndi-lookup jndi-name="jdbc/jndiDS" id="dataSource"/>
+    
+    <!-- Creating controllers -->
+    <bean id="indexController" class="info.thomazo.alex.web.controllers.IndexController">
+    	<property name="dataSource" ref="dataSource"/>
+    	<property name="envName"><jee:jndi-lookup jndi-name="java:comp/env/envName"/></property>
+    </bean>
+
+	<!-- Application mappings -->
+    <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+        <property name="alwaysUseFullPath" value="true"/>
+    </bean>
+
+	<!-- Default handlers (with annotations) -->
+	<mvc:annotation-driven />
+
+    <!-- View resolver -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix" value="/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+</beans>
